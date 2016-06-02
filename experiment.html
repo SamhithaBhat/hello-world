@@ -1,0 +1,54 @@
+<html>
+<head>
+<title> New page </title>
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+</head>
+<body ng-app = "myApp" ng-controller="formCtrl">
+<span style = "color:pink;"><h1> Just for fun </h1></span><hr> <br><br>
+ <div>
+  <span ng-show="hideform">
+  <table>
+	<tr><p> Enter your name: <input type = "text" ng-model="userName"> </p> </tr>
+    <tr><p> Hello <b> {{userName|uppercase}}!!</b></p></tr>
+    <tr><button ng-click="userForm()"> Ready To Fill the form! </button><br><br></tr>
+  </table>
+  </span>
+  <form ng-hide="hideform">
+		<label> Enter your Name: </label>
+		<input type="text" ng-model="userName" ng-disabled="!edit" placeholder="Name"/> <br/><br/>
+		<label> Enter your age: </label>
+		<input type="text" ng-model="userAge" placeholder="Age" required/> <br/> <br/>
+		<label> Enter a number between 1- 3 </label>
+		<input type="text" ng-model="userNumber" placeholder="lucky number" min="1" max = "3" required/> <br/><br/><br>
+		<!--<button ng-click="lucky()"> Done!!  </button><br>-->
+		<label ng-hide = "hideLucky" style = "font-size: 20px;"> you are as healthy as a horse and you are very <b> {{luckyDesc}}!!!!</b></label>
+ 	</form>
+ </div>
+<script>
+var app = angular.module('myApp', []);
+app.controller('formCtrl', function($scope) {
+    $scope.userName = "";
+	$scope.hideform = true;
+	$scope.hideLucky = true;
+    $scope.userForm = function(){
+		 $scope.hideform = false;
+		 $scope.edit =false;
+		 $scope.hideLucky = true;
+		 }
+	//$scope.lucky = function(){
+	$scope.$watch("userNumber",function(){
+	    $scope.hideLucky =false;
+		$scope.luckyDesc='';
+		var luckyNumber= [{number:"1" , desc : "Dedicated.And you have won 100Rs" }, {number: "2", desc: "Caring. And you have won iPhone 6s"}, {number: "3", desc: "helpful. And you have won a car"}];
+		luckyNumber.map(function(item){
+			if($scope.userNumber === item.number)
+			$scope.luckyDesc=item.desc;
+			if($scope.luckyDesc=="")
+			$scope.luckyDesc="good. But to feel lucky please enter a value between 1-3";
+		});
+	});
+//}
+});
+</script>
+</body>
+</html> 
